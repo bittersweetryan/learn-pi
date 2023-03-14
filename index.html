@@ -44,11 +44,15 @@
       .number-input {
         color: grey;
         width: 75px;
-        height: 6rem;
         font-size: 6rem;
         padding: 10px;
         outline: none;
-        border: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid grey;
+        margin-bottom: 10px;
+        box-shadow: none;
       }
 
       .number-input:focus {
@@ -189,7 +193,13 @@
       <span class="number"> 3 </span>
       <span class="number"> . </span>
       <span class="number">
-        <input type="text" class="number-input" maxlength="1" pattern="\d" />
+        <input
+          type="text"
+          class="number-input"
+          id="number-input"
+          maxlength="1"
+          pattern="\d"
+        />
       </span>
       <span class="answer hidden"> </span>
     </div>
