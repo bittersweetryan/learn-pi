@@ -109,6 +109,7 @@
 
         let easy = false;
         let disableInput = false;
+        let currentHighScore = 0;
 
         numberInput.focus();
 
@@ -154,7 +155,10 @@
         }
 
         function setHighScore() {
-          highScore.innerHTML = `Your high score is <strong class="high-score-value">${cursor}</strong>!  Keep trying to beat it!`;
+          if (cursor >= currentHighScore) {
+            currentHighScore = cursor;
+          }
+          highScore.innerHTML = `Your high score is <strong class="high-score-value">${currentHighScore}</strong>!  Keep trying to beat it!`;
         }
       });
 
