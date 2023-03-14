@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Pi</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+
+      header {
+        font-size: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-weight: 800;
+      }
+
+      .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .number {
+        font-size: 6rem;
+        color: blue;
+      }
+
+      .number-input {
+        color: grey;
+        width: 75px;
+        height: 6rem;
+        font-size: 6rem;
+        padding: 10px;
+        outline: none;
+        border: none;
+      }
+
+      .number-input:focus {
+        outline: none;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .answer {
+        font-size: 6rem;
+        color: red;
+        transition: opacity 2s;
+        opacity: 0;
+        display: inline;
+      }
+
+      .high-score {
+        margin: 1em;
+        font-size: 1.5rem;
+      }
+
+      .high-score-value {
+        margin-left: 8px;
+        color: blue;
+        font-size: 2rem;
+      }
+
+      .easy-checkbox {
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+      }
+    </style>
+    <script>
+      const pi =
+        "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679".split(
+          ""
+        );
+      let cursor = 0;
+      let highScore = 0;
+
+      window.addEventListener("DOMContentLoaded", () => {
+        //when a number is added, check if it is correct
+        const numberInput = document.querySelector(".number-input");
+        const panel = document.querySelector(".interactive-panel");
+        const answer = document.querySelector(".answer");
+        const highScore = document.querySelector(".high-score");
+        const easyCheckbox = document.querySelector(".easy-checkbox");
+
+        easyCheckbox.addEventListener("change", (e) => {
+          easy = e.target.checked;
+        });
+
+        let easy = false;
+
+        numberInput.focus();
+
+        numberInput.addEventListener("input", async (e) => {
+          const value = e.target.value;
+
+          if (value === pi[cursor]) {
+            cursor++;
+
+            const newNode = createNode(value);
+            insertNode(panel, numberInput.parentNode, newNode);
+          } else {
+            setHighScore(cursor);
+            //show them what the answer should be
+            answer.textContent = pi[cursor];
+            //show the answer
+            answer.style.opacity = 1;
+            numberInput.classList.add("hidden");
+            answer.classList.remove("hidden");
+
+            await delay(2000);
+            answer.style.opacity = 0;
+            await delay(2000);
+            numberInput.classList.remove("hidden");
+            cursor = getCursorPosition();
+            clearInputs(panel, cursor + 2);
+            numberInput.focus();
+          }
+          e.target.value = "";
+        });
+
+        function getCursorPosition() {
+          if (!easy) {
+            return 0;
+          }
+          return cursor >= 3 ? cursor - 3 : 0;
+        }
+
+        function setHighScore() {
+          highScore.innerHTML = `Your high score is <strong class="high-score-value">${cursor}</strong>!  Keep trying to beat it!`;
+        }
+      });
+
+      function clearInputs(panel, deleteStartPos) {
+        const numbers = panel.querySelectorAll(".number");
+
+        for (let i = deleteStartPos; i < numbers.length - 1; i++) {
+          numbers[i].remove();
+        }
+      }
+
+      function createNode(value) {
+        const node = document.createElement("span");
+        node.classList.add("number");
+        node.textContent = value;
+
+        return node;
+      }
+
+      function insertNode(panel, numberInput, newNode) {
+        panel.insertBefore(newNode, numberInput);
+      }
+
+      function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+    </script>
+  </head>
+  <body>
+    <header>Learn PI</header>
+    <div class="high-score center">
+      You don't have a high score yet! Start filling out PI to set your high
+      score!
+    </div>
+    <div class="interactive-panel center">
+      <span class="number"> 3 </span>
+      <span class="number"> . </span>
+      <span class="number">
+        <input type="text" class="number-input" maxlength="1" pattern="\d" />
+      </span>
+      <span class="answer hidden"> </span>
+    </div>
+    <div class="easy-mode center">
+      Easy Mode? <input type="checkbox" class="easy-checkbox" />
+    </div>
+    <div class="easy-mode center" style="opacity: 0.5">
+      (Easy mode will only delete the last 3 numbers when you get one wrong.)
+    </div>
+  </body>
+</html>
