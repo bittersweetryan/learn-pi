@@ -74,10 +74,12 @@
       .high-score {
         margin: 1em;
         font-size: 1.5rem;
+        text-align: center;
       }
 
       .high-score-value {
-        margin-left: 8px;
+        margin: 0 4px 0 4px;
+        text-align: center;
         color: blue;
         font-size: 2rem;
       }
@@ -189,7 +191,7 @@
   </head>
   <body>
     <header>Learn PI</header>
-    <div class="high-score center">
+    <div class="high-score">
       You don't have a high score yet! Start filling out PI to set your high
       score!
     </div>
@@ -202,7 +204,7 @@
           class="number-input"
           id="number-input"
           maxlength="1"
-          pattern="\d"
+          pattern="\d*"
         />
       </span>
       <span class="answer hidden"> </span>
