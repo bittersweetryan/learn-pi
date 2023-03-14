@@ -104,10 +104,15 @@
         });
 
         let easy = false;
+        let disableInput = false;
 
         numberInput.focus();
 
         numberInput.addEventListener("input", async (e) => {
+          if (disableInput) {
+            return;
+          }
+
           const value = e.target.value;
 
           if (value === pi[cursor]) {
@@ -116,6 +121,7 @@
             const newNode = createNode(value);
             insertNode(panel, numberInput.parentNode, newNode);
           } else {
+            disableInput = true;
             setHighScore(cursor);
             //show them what the answer should be
             answer.textContent = pi[cursor];
@@ -130,6 +136,7 @@
             numberInput.classList.remove("hidden");
             cursor = getCursorPosition();
             clearInputs(panel, cursor + 2);
+            disableInput = false;
             numberInput.focus();
           }
           e.target.value = "";
